@@ -24,7 +24,7 @@ public class Shop {
     private String shopName;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private Long userId;
 
     @Column(nullable = false)

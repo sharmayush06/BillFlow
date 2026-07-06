@@ -73,16 +73,19 @@ public class ProductService {
         return ResponseEntity.ok(productRepository.save(product));
     }
 
-    public ResponseEntity<?> deleteProductById(Long id) {
+    public ResponseEntity<?> deleteOrAddProductById(Long id) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        product.setIsActive(false);
+        product.setIsActive(!product.getIsActive());
 
         productRepository.save(product);
 
-        return ResponseEntity.ok("Product deleted successfully.");
+        if(product.getIsActive())
+            return ResponseEntity.ok("Product readded successfully.");
+        else
+            return ResponseEntity.ok("Product deleted successfully.");
     }
 
     public ResponseEntity<?> updateStock(Long id,

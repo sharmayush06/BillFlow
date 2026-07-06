@@ -69,7 +69,7 @@ public class Product {
     @Column(nullable = false)
     private Boolean isActive=true;
 
-    @JoinColumn(name = "shopId")
+    @JoinColumn(name = "shop_id")
     @ManyToOne
     private Shop shop;
 

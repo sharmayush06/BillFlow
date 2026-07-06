@@ -7,13 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopCreateRequest {
+public class ShopUpdateRequest {
 
     private String shopName;
-
-    private Long userId;
-
-    private String gstNumber;
 
     private String address;
 

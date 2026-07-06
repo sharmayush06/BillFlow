@@ -38,8 +38,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProductById(@PathVariable Long id){
-        return productService.deleteProductById(id);
+    public ResponseEntity<?> deleteOrAddProductById(@PathVariable Long id){
+        return productService.deleteOrAddProductById(id);
     }
 
     @PutMapping("/{id}/stock")
