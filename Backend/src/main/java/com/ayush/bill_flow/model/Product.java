@@ -9,6 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -69,8 +72,11 @@ public class Product {
     @Column(nullable = false)
     private Boolean isActive=true;
 
-    @JoinColumn(name = "shopId")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    @OneToMany(mappedBy = "product")
+    private List<BillItem> billItems= new ArrayList<>();
 
 }

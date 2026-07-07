@@ -3,6 +3,7 @@ package com.ayush.bill_flow.repository;
 import com.ayush.bill_flow.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -26,8 +27,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT p
             FROM Product p
             WHERE p.quantity <= p.minQuantity
-              AND p.isActive = true
+            AND p.shop=:shopId
+            AND p.isActive = true
             """)
-    List<Product> findLowStock();
+    List<Product> findLowStock(@Param("shopId") Long shopId);
 
 }

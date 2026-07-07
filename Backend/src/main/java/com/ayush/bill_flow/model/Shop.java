@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,8 @@ public class Shop {
     private String shopName;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private Long userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private String gstNumber;
@@ -62,5 +63,8 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop")
     private List<Product> products;
+
+    @OneToMany(mappedBy = "shop")
+    private List<Bill> bills = new ArrayList<>();
 
 }
