@@ -1,17 +1,20 @@
 package com.ayush.bill_flow.service;
 
-import com.ayush.bill_flow.dto.product.ProductCreateRequest;
-import com.ayush.bill_flow.dto.product.ProductUpdateRequest;
-import com.ayush.bill_flow.dto.product.StockUpdate;
-import com.ayush.bill_flow.model.Product;
-import com.ayush.bill_flow.repository.ProductRepository;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import com.ayush.bill_flow.dto.product.ProductCreateRequest;
+import com.ayush.bill_flow.dto.product.ProductUpdateRequest;
+import com.ayush.bill_flow.dto.product.StockUpdate;
+import com.ayush.bill_flow.exception.InsufficientStockException;
+import com.ayush.bill_flow.exception.ResourceNotFoundException;
+import com.ayush.bill_flow.model.Product;
+import com.ayush.bill_flow.repository.ProductRepository;
 
 @Service
 public class ProductService {
@@ -48,16 +51,15 @@ public class ProductService {
     public ResponseEntity<?> getProductById(Long id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         return ResponseEntity.ok(product);
     }
 
-    public ResponseEntity<?> updateProductById(Long id,
-                                               ProductUpdateRequest request) {
+    public ResponseEntity<?> updateProductById(Long id, ProductUpdateRequest request) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -76,7 +78,7 @@ public class ProductService {
     public ResponseEntity<?> deleteOrAddProductById(Long id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setIsActive(!product.getIsActive());
 
@@ -92,7 +94,7 @@ public class ProductService {
                                          StockUpdate stockUpdate) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setQuantity(stockUpdate.getUpdatedStock());
 
@@ -103,7 +105,7 @@ public class ProductService {
                                            StockUpdate stockUpdate) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         product.setQuantity(product.getQuantity() + stockUpdate.getUpdatedStock());
 
@@ -114,10 +116,10 @@ public class ProductService {
                                            StockUpdate stockUpdate) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         if (product.getQuantity() < stockUpdate.getUpdatedStock()) {
-            throw new RuntimeException("Insufficient stock");
+            throw new InsufficientStockException("Insufficient stock");
         }
 
         product.setQuantity(product.getQuantity() - stockUpdate.getUpdatedStock());
@@ -130,7 +132,7 @@ public class ProductService {
         List<Product> products = productRepository.findByCategory(category).stream().filter(Product::getIsActive).toList();
 
         if (products.isEmpty()) {
-            throw new RuntimeException("No products found");
+            throw new ResourceNotFoundException("No products found");
         }
 
         return ResponseEntity.ok(products);
@@ -141,15 +143,15 @@ public class ProductService {
         List<Product> products = productRepository.findProductByKeyword(keyword).stream().filter(Product::getIsActive).toList();
 
         if (products.isEmpty()) {
-            throw new RuntimeException("No products found");
+            throw new ResourceNotFoundException("No products found");
         }
 
         return ResponseEntity.ok(products);
     }
 
-    public ResponseEntity<?> getLowStock() {
+    public ResponseEntity<?> getLowStock(Long shopId) {
 
-        List<Product> products = productRepository.findLowStock().stream().filter(Product::getIsActive).toList();
+        List<Product> products = productRepository.findLowStock(shopId).stream().filter(Product::getIsActive).toList();
 
         return ResponseEntity.ok(products);
     }

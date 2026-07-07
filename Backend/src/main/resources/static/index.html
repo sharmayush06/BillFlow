@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillFlow Backend Tester</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BillFlow Backend Tester</h1>
+            <p>Use this simple page to quickly try the backend endpoints.</p>
+        </header>
+
+        <section class="panel">
+            <label for="baseUrl">API base URL</label>
+            <div class="row">
+                <input id="baseUrl" value="/api" />
+                <button id="healthBtn">Health Check</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Shops</h2>
+            <div class="actions">
+                <button data-endpoint="/shops" data-method="GET">List Shops</button>
+                <button data-endpoint="/shops" data-method="POST" data-payload='{"shopName":"Demo Store","userId":1,"gstNumber":"27ABCDE1234F1Z5","address":"Main Road","city":"Pune","state":"MH","country":"India","pincode":"411001","logoUrl":"https://example.com/logo.png","currency":"INR"}'>Create Sample Shop</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Products</h2>
+            <div class="actions">
+                <button data-endpoint="/products" data-method="GET">List Products</button>
+                <button data-endpoint="/products" data-method="POST" data-payload='{"name":"Demo Product","barcode":"1001","description":"Sample product","imageUrl":"https://example.com/product.png","purchasingPrice":50,"sellingPrice":80,"quantity":20,"minQuantity":5,"category":"Electronics","unit":"PIECE","brand":"DemoBrand","shop":{"shopId":1}}'>Create Sample Product</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Bills</h2>
+            <div class="actions">
+                <button data-endpoint="/bills" data-method="GET">List Bills</button>
+                <button data-endpoint="/bills" data-method="POST" data-payload='{"shopId":1,"paymentMethod":"CARD","discount":10,"billItemRequests":[{"productId":1,"quantity":2}]}' >Create Sample Bill</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Response</h2>
+            <div id="status" class="status">Ready.</div>
+            <pre id="responseBox">{}</pre>
+        </section>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

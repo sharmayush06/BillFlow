@@ -11,8 +11,6 @@ public class ShopCreateRequest {
 
     private String shopName;
 
-    private Long userId;
-
     private String gstNumber;
 
     private String address;

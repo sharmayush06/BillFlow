@@ -67,9 +67,9 @@ public class ProductController {
         return productService.searchProduct(keyword);
     }
 
-    @GetMapping("/low-stock")
-    public ResponseEntity<?> getLowStock(){
-        return productService.getLowStock();
+    @GetMapping("/low-stock/{shopId}")
+    public ResponseEntity<?> getLowStock(@PathVariable Long shopId){
+        return productService.getLowStock(shopId);
     }
 
 }

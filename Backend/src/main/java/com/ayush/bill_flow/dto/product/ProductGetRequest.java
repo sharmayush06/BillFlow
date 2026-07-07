@@ -2,9 +2,15 @@ package com.ayush.bill_flow.dto.product;
 
 import com.ayush.bill_flow.model.Shop;
 import com.ayush.bill_flow.model.Unit;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductGetRequest {
 
     private Long productId;
@@ -27,5 +33,5 @@ public class ProductGetRequest {
 
     private Boolean isActive;
 
-    private Shop shop;
+    private Long shopId;
 }
