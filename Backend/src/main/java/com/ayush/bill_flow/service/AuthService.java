@@ -26,6 +26,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
+        return register(request, Role.OWNER);
+    }
+
+    public AuthResponse register(RegisterRequest request, Role defaultRole) {
 
         User user = new User();
 
@@ -40,7 +44,15 @@ public class AuthService {
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setRole(Role.OWNER);
+        if (request.getRole() != null && !request.getRole().isBlank()) {
+            try {
+                user.setRole(Role.valueOf(request.getRole().trim().toUpperCase()));
+            } catch (IllegalArgumentException ex) {
+                user.setRole(defaultRole);
+            }
+        } else {
+            user.setRole(defaultRole);
+        }
 
         repository.save(user);
 
